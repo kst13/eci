@@ -1,0 +1,15 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### 세션발급
+POST http://localhost:8080/auth
+Content-Type: application/json
+
+{
+  "id": "rtest001",
+  "password" : "123456"
+}
+
+### 유저정보
+GET http://localhost:8080/consent/baseInfo

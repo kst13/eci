@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: eci
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+
+jwt:
+  access-expiration-time: 7200
