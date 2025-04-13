@@ -1,5 +1,6 @@
 package com.osstem.ow.eci.infra;
 
+import com.osstem.ow.eci.domain.infobank.BaseInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,9 +36,27 @@ public class InfoBankApiClient {
                 .block();
     }
 
-    public Object getUserInfo(String id, String pw) {
+    public BaseInfo getUserInfo(String id, String pw) {
         return webClient.get()
                 .uri("/api/v1/userinfo")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .header("OST-ID", id)
+                .header("OST-PWD", pw)
+                .exchangeToMono(response -> {
+                    log.info("Response Code : {}", response.statusCode());
+                    if (response.statusCode().is2xxSuccessful()) {
+                        return response.bodyToMono(BaseInfo.class);
+                    } else {
+                        return response.bodyToMono(BaseInfo.class);
+                    }
+                })
+                .block();
+    }
+
+    public Object getRegInfo(String id, String pw) {
+        return webClient.get()
+                .uri("/api/v1/reg")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .header("OST-ID", id)

@@ -3,8 +3,12 @@ package com.osstem.ow.eci.domain;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Signature;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,9 +18,11 @@ import java.util.Map;
 public class JwtService {
     private static final String key = "my-very-secret-secret-key-1234567890";
     private final JwtProperties jwtProperties;
+    private SecretKey secretKey;
 
     public JwtService(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
+        this.secretKey = new SecretKeySpec(key.getBytes(), SignatureAlgorithm.HS256.getJcaName() );
     }
 
     public String issueAccessToken(String id, String password) {
@@ -30,6 +36,7 @@ public class JwtService {
 
     public SessionRequest parseToken(String token) {
         Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -48,7 +55,7 @@ public class JwtService {
             jwtBuilder.claims(claims);
         }
         return jwtBuilder
-                .signWith()
+                .signWith(secretKey)
                 .compact();
 
     }

@@ -13,3 +13,9 @@ Content-Type: application/json
 
 ### 유저정보
 GET http://localhost:8080/consent/baseInfo
+
+###
+POST http://localhost:8080/consent/callback
+
+###
+GET https://stg-osstem.infobank.net:7000/api/v1/reg

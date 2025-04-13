@@ -34,6 +34,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.113.Final:osx-aarch_64")
 }
 
 tasks.withType<Test> {
